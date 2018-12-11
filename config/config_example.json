@@ -1,0 +1,17 @@
+{
+    "local":{
+        "server_id":1,
+        "endpoint":"127.0.0.1:30261"
+    },
+    "peers":[
+        {
+            "server_id":2,
+            "endpoint":"127.0.0.1:30262"
+        },
+        {
+            "server_id":3,
+            "endpoint":"127.0.0.1:30263"
+        }
+    ],
+    "dbpath":"/path/to/leveldb/store/"
+}

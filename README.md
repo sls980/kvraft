@@ -1,5 +1,5 @@
 # kvraft #
-## overview ##
+## Overview ##
 Based on raft-protocol and leveldb, implement a simple but strong consistency distributed kv storage system.</br>
 Only for sutdy, not business.
 
@@ -16,7 +16,7 @@ Refer to https://github.com/jmhodges/levigo
 <pre><code>$ go install kvraft/cli
 </code></pre>
 
-## usage ##
+## Usage ##
 1 **Run server**
 
 must greater than three instances

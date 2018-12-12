@@ -187,6 +187,7 @@ func (rf *Raft) startServer() {
 	go func() {
 		<-ch
 		rf.persist()
+		os.Exit(0)
 	}()
 }
 

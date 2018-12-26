@@ -534,7 +534,7 @@ func (rf *Raft) broadcastAppendEntries() error {
 				args.LeaderId = rf.peersEndPoints.Local.ServerId
 				args.LeaderCommit = rf.commitIndex
 				args.PreLogIndex = rf.nextIndex[peer.ServerId] - 1
-				args.PreLogTerm = rf.log[args.PreLogIndex].LogTerm
+				args.PreLogTerm = rf.log[args.PreLogIndex-baseIndex].LogTerm
 				args.Entries = make([]LogEntry, len(rf.log[args.PreLogIndex+1-baseIndex:]))
 				copy(args.Entries, rf.log[args.PreLogIndex+1-baseIndex:])
 

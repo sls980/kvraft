@@ -46,7 +46,7 @@ type Raft struct {
 	votedFor    int
 	log         []LogEntry
 
-	//volatile state on leader
+	//volatile state on all server
 	commitIndex int
 	lastApplied int
 

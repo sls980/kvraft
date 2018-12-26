@@ -158,7 +158,7 @@ func (rf *Raft) startServer() {
 
 				//when len(log) > threshold_value, should truncate the applied log//
 				if rf.lastApplied-baseIndex > LOGTHRESHOLD {
-					rf.log = rf.log[rf.lastApplied-LOGTHRESHOLD:]
+					rf.log = rf.log[rf.lastApplied-LOGTHRESHOLD/2:]
 				}
 
 				rf.mu.Unlock()

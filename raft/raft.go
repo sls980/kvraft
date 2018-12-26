@@ -396,12 +396,6 @@ func (rf *Raft) sendAppendEntries(serverId int, args AppendEntriesArgs, reply *A
 	}
 
 	if reply.Success {
-
-	} else {
-
-	}
-
-	if reply.Success {
 		if len(args.Entries) > 0 {
 			rf.nextIndex[serverId] = args.Entries[len(args.Entries)-1].LogIndex + 1
 			rf.matchIndex[serverId] = rf.nextIndex[serverId] - 1

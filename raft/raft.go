@@ -5,7 +5,7 @@ import (
 	"encoding/gob"
 	"errors"
 
-	//"fmt"
+	"fmt"
 	"kvraft/config"
 	"kvraft/persister"
 	"math/rand"
@@ -90,19 +90,25 @@ func (rf *Raft) startServer() {
 	config.CheckError("listen error:", err)
 	go http.Serve(l, nil)
 
+	// set random seed
+	rand.Seed(int64(rf.peersEndPoints.Local.ServerId))
 	go func() {
 		for {
 			switch rf.state {
 			case FOLLOWER:
 				select {
 				case <-rf.chanHeartbeat:
+					fmt.Printf("[%d] I am follower, recv hearbeat\n", rf.peersEndPoints.Local.ServerId)
 				case <-rf.chanGrantVote:
+					fmt.Printf("[%d] I am follower, grant vote\n", rf.peersEndPoints.Local.ServerId)
 				case <-time.After(time.Duration(time.Duration(FOLLOWERTIMEOUT))):
 					rf.state = CANDIDATE
+					fmt.Printf("[%d] I am follower, timeout convert to candidate\n", rf.peersEndPoints.Local.ServerId)
 				}
 			case LEADER:
 				rf.broadcastAppendEntries()
 				time.Sleep(HBINTERVAL)
+				fmt.Printf("[%d] I am leader, broadcast entries\n", rf.peersEndPoints.Local.ServerId)
 			case CANDIDATE:
 				rf.mu.Lock()
 				rf.currentTerm++
@@ -116,11 +122,15 @@ func (rf *Raft) startServer() {
 				 * or a period of time goes by with no winner
 				 */
 				go rf.broadcastRequestVote()
+				
+				fmt.Printf("[%d] I am candidate, start vote\n", rf.peersEndPoints.Local.ServerId)
 
 				select {
 				case <-time.After(time.Duration(rand.Int31()%830+110) * time.Millisecond):
+					fmt.Printf("[%d] I am candidate, vote timeout\n", rf.peersEndPoints.Local.ServerId)
 				case <-rf.chanHeartbeat:
 					rf.state = FOLLOWER
+					fmt.Printf("[%d] I am candidate, lose vote, convert to follow\n", rf.peersEndPoints.Local.ServerId)
 				case <-rf.chanLeader:
 					rf.mu.Lock()
 
@@ -133,6 +143,7 @@ func (rf *Raft) startServer() {
 					}
 
 					rf.mu.Unlock()
+					fmt.Printf("[%d] I am follower, win vote, convert to leader\n", rf.peersEndPoints.Local.ServerId)
 				}
 			}
 		}

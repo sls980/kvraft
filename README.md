@@ -45,3 +45,17 @@ config_example.json
 connect any instace of cluster
 </code></pre>
 
+## Docker ##
+kvraft support docker deployment, quick use in just three steps.
+
+1 **build image**
+<pre><code>docker build -t kvraft:0.1 kvraft/docker
+</code></pre>
+
+2 **run docker container**
+<pre><code>docker run -i -p port:port -v /local/work/path/:/opt/kvraft/ kvraft:0.1 kvraft /opt/kvraft/config.json
+</code></pre>
+
+3 **connect to kvraft**
+<pre><code>docker run -i kvraft:0.1 cli node1 node2 node3
+</code></pre>
